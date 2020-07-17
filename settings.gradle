@@ -1,0 +1,2 @@
+include ':app', ':mvp', ':common', ':multiple-status-view', ':home', ':mall', ':my'
+rootProject.name='SM_Education'

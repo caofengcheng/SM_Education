@@ -1,0 +1,90 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'  //kapt3插件
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            //设置支持的SO库架构
+            abiFilters "armeabi","armeabi-v7a"
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            assets.srcDirs = ['src/main/assets', 'src/main/assets/']
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    configurations {
+        all {
+            exclude module: 'httpclient'
+            exclude module: 'commons-logging'
+            exclude module: 'opengl-api'
+            exclude module: 'xpp3'
+            exclude module: 'xmlParserAPIs'
+            exclude module: 'android'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api deps.v7
+    api deps.constraintLayout
+    api deps.design
+    api deps.fresco
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    api 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+    api 'com.github.zcweng:switch-button:0.0.3@aar'
+    implementation 'org.apmem.tools:layouts:1.10@aar'
+    api 'com.j256.ormlite:ormlite-android:5.0'
+    api 'com.j256.ormlite:ormlite-core:5.0'
+    api 'com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha2'
+    //gson
+    api 'com.google.code.gson:gson:2.8.4'
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
+    //eventbus
+    api 'org.greenrobot:eventbus:3.0.0'
+    /*PictureSelector*/
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
+    implementation 'cn.yipianfengye.android:zxing-library:2.2'
+    //utilcode
+    api 'com.blankj:utilcode:1.25.2'
+    //wheelview
+    api 'com.cncoderx.wheelview:library:1.2.5'
+    //gif
+    api 'pl.droidsonroids.gif:android-gif-drawable:1.2.16'
+    //leakCanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    //运行时权限
+    implementation'pub.devrel:easypermissions:1.2.0'
+    // APT dependencies(Kotlin内置的注解处理器)
+    kapt rootProject.ext.annotationProcessorLibs
+    //kotlin 支持库
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+
+    api project(':mvp')
+    implementation project(':multiple-status-view')
+}
